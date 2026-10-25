@@ -1,0 +1,22 @@
+name: Daily Shift Summary (Supabase Edge Function)
+
+# Optional cron alternative to pg_cron (docs/DEPLOYMENT.md §2.4).
+# Runs the daily-shift-summary edge function every day at 18:00 UTC.
+on:
+  schedule:
+    - cron: "0 18 * * *"
+  workflow_dispatch: {}   # allow manual trigger from the Actions tab
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Supabase Edge Function
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          curl -fsS -X POST "${SUPABASE_URL}/functions/v1/daily-shift-summary" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}" \
+            -d '{}'

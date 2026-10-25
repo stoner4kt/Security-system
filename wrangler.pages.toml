@@ -1,0 +1,9 @@
+# Cloudflare Pages config for the statically-exported Next.js app.
+# Build: npm install && npm run build  → output to ./out
+
+name = "sentinel-fleet"
+compatibility_date = "2025-10-01"
+
+[build]
+command = "npm install && npx next build"
+output_dir = "out"
